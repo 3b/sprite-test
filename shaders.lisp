@@ -37,7 +37,8 @@
     (let* ((c (@ (aref gl-in 0) gl-position))
            (extents (texel-fetch tile-extents (@ in tile)
                                  ))
-           (offsets (texel-fetch tile-offsets (@ in tile))))
+           (offsets (* (texel-fetch tile-offsets (@ in tile))
+                       (@ in scale))))
 
       (setf (@ gouts uv) (vec3 0 0 0))
 
