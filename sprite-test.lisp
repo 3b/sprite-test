@@ -36,14 +36,18 @@
 (defun update (w)
   (when (sprite-layer w)
     (let ((sprites (sprites w)))
-      (loop for i across sprites
+      (loop with wx = (wx w)
+            with wy = (wy w)
+            with cx = (/ wx 2.0)
+            with cy = (/ wy 2.0)
+            for i across sprites
             for (x y s id) = i
             do (setf x (+ x
                           (1- (random 3))
-                          (* -0.1 (/ (- x 400) 800.0))))
+                          (* -0.1 (/ (- x cx) wx))))
                (setf y (+ y
                           (1- (random 3))
-                          (* -0.1 (/ (- y 500) 1000.0))))
+                          (* -0.1 (/ (- y cy) wy))))
                (setf (first i) x
                      (second i) y)
                (add-sprite (sprite-layer w)
@@ -107,11 +111,12 @@
       (:r (setf (fill-pointer (sprites w)) 0))
       (:space
        (loop repeat 1000
-             do (vector-push-extend (list (random 800)
-                                          (random 1000)
+             do (vector-push-extend (list (random (wx w))
+                                          (random (wy w))
                                           1
                                           (+ 194(random 3)))
                                     (sprites w)))))))
 
 ;;(run (make-instance 'foo3 :width 800 :height 1000 :x 1924 :y 32))
+;;(run (make-instance 'foo3 :width 1920 :height 1080 :x 1920 :y 32))
 ;;(run (make-instance 'foo3 :width 800 :height 1000 :x 4 :y 32))
